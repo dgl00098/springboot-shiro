@@ -28,6 +28,14 @@ public class Constants {
      * session中存放用户信息的key值
      */
     public static final String SESSION_USER_INFO = "userInfo";
+    //登录终端
+    public static final String SYS_TYPE="LOGIN_TYPE";
+
+    //登陆用户信息
+    public static final String LOGIN_USER="loginUser";
+
+    //在线用户
+    public static final String ON_LOGIN_USER="onLoginUser";
 
 
 }

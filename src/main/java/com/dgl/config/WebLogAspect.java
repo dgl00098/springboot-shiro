@@ -3,7 +3,7 @@ package com.dgl.config;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.dgl.common.Constants;
-import com.dgl.dao.UserRepository;
+
 import com.dgl.smodel.domain.User;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
@@ -29,8 +29,8 @@ import java.util.Enumeration;
 @Slf4j
 public class WebLogAspect {
 
-	@Autowired
-	UserRepository userRepo;
+//	@Autowired
+//	UserRepository userRepo;
 
 
 	ThreadLocal<Long> startTime = new ThreadLocal<Long>();
@@ -63,7 +63,7 @@ public class WebLogAspect {
 			 User user=(User)request.getSession().getAttribute(Constants.TOKEN_USER);
 			 if (user!=null){
 				 LocalDateTime now = LocalDateTime.now();
-				 userRepo.updateUserLastAccessTime(now,user.getId());
+				 //userRepo.updateUserLastAccessTime(now,user.getId());
 				 System.out.println("==============用户的最后访问时间已更新为: "+now+"==================");
 			 }
 	      // 记录下请求内容

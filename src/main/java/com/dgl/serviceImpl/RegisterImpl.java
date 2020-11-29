@@ -1,7 +1,12 @@
 package com.dgl.serviceImpl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.dgl.common.Constants;
 import com.dgl.common.Enum.CustomException;
 import com.dgl.common.Enum.EnumErrorMsg;
+import com.dgl.common.Enum.EnumUserType;
+import com.dgl.common.utils.ShiroUtils;
 import com.dgl.dao.UserRepository;
 import com.dgl.service.RegisterService;
 import com.dgl.smodel.domain.User;
@@ -10,17 +15,25 @@ import com.dgl.smodel.request.RetrievePasswordReq;
 import com.dgl.smodel.request.UserLoginReq;
 import com.dgl.smodel.request.UserRegisterReq;
 import com.dgl.smodel.response.RespEntity;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class RegisterImpl implements RegisterService {
     @Autowired
     UserRepository userRepo;
 
+    private static final Logger logger = LoggerFactory.getLogger(RegisterImpl.class);
 
     /**
      * 用户注册
@@ -32,7 +45,7 @@ public class RegisterImpl implements RegisterService {
             throw new CustomException(EnumErrorMsg.PWD_NOT_EQUALS.getCode(), EnumErrorMsg.PWD_NOT_EQUALS.getMsg());
         }
         //判断该手机号是否已经注册
-        User user = userRepo.findByUserTel(req.getUserTel());
+        User user = userRepo.findByMobile(req.getUserTel());
         if (user != null) {
             throw new CustomException(EnumErrorMsg.TEL_HAS_EXIST.getCode(), EnumErrorMsg.TEL_HAS_EXIST.getMsg());
         }
@@ -54,7 +67,7 @@ public class RegisterImpl implements RegisterService {
     @Override
     public RespEntity<?> userLogin(HttpServletRequest request, HttpServletResponse response, UserLoginReq req) {
 
-        User user = userRepo.findByUserAccountAndUserPwd(req.getUserAccount(), DigestUtils.md5DigestAsHex(req.getUserPwd().getBytes()));
+        User user = userRepo.findByUserAccountAndPassword(req.getMobilePhone(), DigestUtils.md5DigestAsHex(req.getPassword().getBytes()));
         if (user == null) {
             return new RespEntity(EnumErrorMsg.ACCOUNT_OR_PWD_ERROR);
         }
@@ -75,7 +88,7 @@ public class RegisterImpl implements RegisterService {
             throw new CustomException(EnumErrorMsg.USER_ACCOUNT_NOT_EXIST.getCode(), EnumErrorMsg.USER_ACCOUNT_NOT_EXIST.getMsg());
         }
         //根据用户账号和手机号查找用户
-        User user1 = userRepo.findByUserAccountAndUserTel(req.getUserAccount(),req.getUserTel());
+        User user1 = userRepo.findByUserAccountAndMobile(req.getUserAccount(),req.getUserTel());
         if (user1==null){
             throw new CustomException(EnumErrorMsg.USER_TEL_NOT_EXIST.getCode(), EnumErrorMsg.USER_TEL_NOT_EXIST.getMsg());
         }
@@ -92,7 +105,7 @@ public class RegisterImpl implements RegisterService {
     @Override
     public RespEntity<?> changePassword(ChangePasswordReq req) {
         //判断旧密码是否正确
-        User user = userRepo.findByUserAccountAndUserPwd(req.getUserAccount(), DigestUtils.md5DigestAsHex(req.getOldPwd().getBytes()));
+        User user = userRepo.findByUserAccountAndPassword(req.getUserAccount(), DigestUtils.md5DigestAsHex(req.getOldPwd().getBytes()));
         if (user==null){
             throw new CustomException(EnumErrorMsg.USER_PWD_ERROR.getCode(), EnumErrorMsg.USER_PWD_ERROR.getMsg());
         }
@@ -117,6 +130,31 @@ public class RegisterImpl implements RegisterService {
     public RespEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
 
         return new RespEntity<>();
+    }
+
+    @Override
+    public RespEntity login(UserLoginReq userVO) {
+
+        Map<String, Object> map = new HashMap<>();
+        Subject subject = SecurityUtils.getSubject();
+        UsernamePasswordToken token = new UsernamePasswordToken(userVO.getMobilePhone(), userVO.getPassword());
+        subject.login(token);
+        String sessionId= subject.getSession().getId().toString();
+        //账号重复登陆验证
+        //saveLoginUser(userVO,sessionId);
+        User userInfo = (User) ShiroUtils.getSessionAttribute(Constants.SESSION_USER_INFO);
+        map.put("token", sessionId);
+        map.put("userId", userInfo.getId());
+        //判断在哪个app端登录
+        ShiroUtils.setSessionAttribute(Constants.SYS_TYPE, userVO.getType());
+        if (EnumUserType.A1.getCode().equalsIgnoreCase(userVO.getType()) || EnumUserType.P1.getCode().equalsIgnoreCase(userVO.getType())){
+            Map<String, String> param=new HashMap<>();
+            param.put("token",sessionId);
+            param.put("userId",userInfo.getId().toString());
+            //String res= HttpClientUtil.doPost(url,param);
+        }
+        return new RespEntity(map);
+
     }
 
 }

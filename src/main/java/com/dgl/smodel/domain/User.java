@@ -9,7 +9,7 @@ import javax.persistence.*;
  */
 @Data
 @Entity
-@Table(name = "user",uniqueConstraints = {@UniqueConstraint(columnNames="userAccount")})
+@Table(name = "user",uniqueConstraints = {@UniqueConstraint(columnNames="user_account")})
 @org.hibernate.annotations.Table(appliesTo = "user", comment = "账号表")
 public class User extends BaseModel {
 

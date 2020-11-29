@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * 注册管理
  */
-@Service
 public interface RegisterService {
 
     /**
@@ -51,4 +50,6 @@ public interface RegisterService {
      * @return
      */
     RespEntity<?> logout(HttpServletRequest request, HttpServletResponse response);
+
+    RespEntity login(UserLoginReq user);
 }
