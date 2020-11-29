@@ -19,13 +19,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-/**
- * @ClassName PermissionsAuthorizationFilter
- * @Description: TODO
- * @Author 张开磊
- * @Date 2020/4/6
- * @Version V1.0
- */
 
 @Component
 public class ShiroPermissionsAuthorizationFilter extends FormAuthenticationFilter {

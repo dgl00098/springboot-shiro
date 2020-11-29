@@ -5,13 +5,7 @@ import org.apache.shiro.authc.HostAuthenticationToken;
 import org.apache.shiro.authc.RememberMeAuthenticationToken;
 import org.springframework.stereotype.Component;
 
-/**
- * @ClassName UserPhoneToken
- * @Description: TODO
- * @Author 张开磊
- * @Date 2020/5/27
- * @Version V1.0
- **/
+
 @Component
 @Data
 public class UserPhoneToken implements HostAuthenticationToken, RememberMeAuthenticationToken {

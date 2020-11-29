@@ -3,13 +3,6 @@ package com.dgl.common.utils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.crypto.hash.SimpleHash;
 
-/**
- * @ClassName ShiroMd5Util
- * @Description: TODO
- * @Author 张开磊
- * @Date 2020/5/27
- * @Version V1.0
- **/
 @Slf4j
 public class ShiroMd5Util {
     //添加user的密码加密方法
