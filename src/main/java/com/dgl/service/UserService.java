@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * 注册管理
  */
-public interface RegisterService {
+public interface UserService {
 
     /**
      * 用户注册

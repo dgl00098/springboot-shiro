@@ -25,6 +25,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 
 import javax.servlet.Filter;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -49,12 +50,23 @@ public class ShiroConfig {
     public ShiroFilterFactoryBean getShiroFilterFactoryBean(DefaultWebSecurityManager defaultWebSecurityManager) {
 
         //1.创建shiro过滤器
-        ShiroFilterFactoryBean bean = new ShiroFilterFactoryBean();
+        ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
 
         //2.给filter设置安全管理器
-        bean.setSecurityManager(defaultWebSecurityManager);
+        shiroFilterFactoryBean.setSecurityManager(defaultWebSecurityManager);
+        //3.配置系统受限资源--定义shiro过滤链  Map结构 http://localhost:9000/dgl/doc.html
+        Map<String,String> filterChainDefinitionMap = new HashMap<>();
+        filterChainDefinitionMap.put("/doc.html", "anon");
+        filterChainDefinitionMap.put("/swagger-resources/**", "anon");
+        filterChainDefinitionMap.put("/swagger-ui.html", "anon");
+        filterChainDefinitionMap.put("/webjars/**", "anon");
+        filterChainDefinitionMap.put("/v2/**", "anon");
+        filterChainDefinitionMap.put("/user/register/**", "anon");
+        //authc 请求这个资源需要认证和授权
+        filterChainDefinitionMap.put("/**","authc");
+        shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 
-        return bean;
+        return shiroFilterFactoryBean;
     }
 
 

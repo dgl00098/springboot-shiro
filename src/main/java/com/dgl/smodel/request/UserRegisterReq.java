@@ -6,28 +6,25 @@ import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
 
-/**
- * 用户注册请求体
- */
-@Data
-@ApiModel
-public class UserRegisterReq {
 
-    @ApiModelProperty(value = "用户账号")
-    @NotEmpty(message = "用户账号不能为空")
-    private String userAccount;
+@Data
+@ApiModel(value = "用户注册请求体")
+public class UserRegisterReq {
 
     @ApiModelProperty(value = "登录密码")
     @NotEmpty(message = "用户密码不能为空")
-    private String userPwd;
+    private String password;
 
     @ApiModelProperty(value = "确认登录密码")
     @NotEmpty(message = "确认密码不能为空")
-    private String confirmUserPwd;
+    private String confirmPassword;
 
     @ApiModelProperty(value = "用户手机号",notes = "找回密码时使用")
     @NotEmpty(message = "用户手机号不能为空")
-    private String userTel;
+    private String mobile;
 
+    @ApiModelProperty(value = "用户类型")
+    @NotEmpty(message = "用户类型不能为空")
+    private int userType;
 
 }

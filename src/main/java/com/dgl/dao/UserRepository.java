@@ -20,15 +20,6 @@ public interface UserRepository extends CrudRepository <User,Integer> {
     //根据手机号查找用户
     User findByMobile(String userTel);
 
-    //根据用户账号查找用户
-    User findByUserAccount(String userAccount);
-
-    //根据用户账号和密码查找用户
-    User findByUserAccountAndPassword(String userAccount,String userPwd);
-
-    //根据用户账号和手机号查找用户
-    User findByUserAccountAndMobile(String userAccount,String userTel);
-
     //更新密码
     @Transactional
     @Modifying
