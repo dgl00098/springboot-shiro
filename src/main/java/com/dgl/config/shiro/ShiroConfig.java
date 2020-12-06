@@ -139,6 +139,7 @@ public class ShiroConfig {
         //配置默认的session管理器
         MySessionManager mySessionManager = new MySessionManager();
         mySessionManager.setSessionDAO(redisSessionDAO());
+        //默认7天
         mySessionManager.setGlobalSessionTimeout(604800000L);
         return mySessionManager;
     }
