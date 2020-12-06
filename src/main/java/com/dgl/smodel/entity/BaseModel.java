@@ -1,9 +1,7 @@
-package com.dgl.smodel.domain;
+package com.dgl.smodel.entity;
 
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -28,7 +26,7 @@ public abstract class BaseModel {
     @Column(name = "update_time",columnDefinition="timestamp default CURRENT_TIMESTAMP COMMENT '最后更新时间'")
     protected LocalDateTime updateTime;
 
-    @Column(columnDefinition = "TINYINT(1) unsigned COMMENT '用户状态'", nullable = false)
+    @Column(columnDefinition = "TINYINT(1) unsigned COMMENT '状态(0正常 1已删除)'", nullable = false)
     protected int status;
 
 }

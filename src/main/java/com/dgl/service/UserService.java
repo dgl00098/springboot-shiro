@@ -1,11 +1,11 @@
 package com.dgl.service;
 
+import com.dgl.smodel.entity.User;
 import com.dgl.smodel.request.ChangePasswordReq;
 import com.dgl.smodel.request.RetrievePasswordReq;
 import com.dgl.smodel.request.UserLoginReq;
 import com.dgl.smodel.request.UserRegisterReq;
 import com.dgl.smodel.response.RespEntity;
-import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,7 +27,7 @@ public interface UserService {
      * @param req
      * @return
      */
-    RespEntity<?> userLogin(HttpServletRequest request, HttpServletResponse response, UserLoginReq req);
+    RespEntity<?> userLogin(UserLoginReq req);
 
     /**
      * 找回密码
@@ -51,5 +51,5 @@ public interface UserService {
      */
     RespEntity<?> logout(HttpServletRequest request, HttpServletResponse response);
 
-    RespEntity login(UserLoginReq user);
+    User findByMobile(String principal);
 }

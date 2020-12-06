@@ -29,7 +29,9 @@ public class Constants {
      */
     public static final String SESSION_USER_INFO = "userInfo";
     //登录终端
-    public static final String SYS_TYPE="LOGIN_TYPE";
+    public static final String LOGIN_TYPE="login_type";
+    //redis中用户信息
+    public static final String SHIRO_SESSION="shiro:session:";
 
     //登陆用户信息
     public static final String LOGIN_USER="loginUser";

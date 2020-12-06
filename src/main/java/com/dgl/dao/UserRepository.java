@@ -1,13 +1,12 @@
 package com.dgl.dao;
 
-import com.dgl.smodel.domain.User;
+import com.dgl.smodel.entity.User;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.time.LocalDateTime;
 
 /**
  * 用户dao

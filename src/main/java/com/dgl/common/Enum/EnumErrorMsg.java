@@ -25,7 +25,7 @@ public enum EnumErrorMsg {
     VERIFICATION_CODE_ERROR("1011", "验证码错误!"),
     VERIFICATION_CODE_EXPIRE("1012", "验证码已过期!"),
     EMAIL_BIND_SUCCESS("1013", "用户邮箱绑定成功!"),
-    ACCOUNT_OR_PWD_ERROR("1003","账号或者密码错误!"),
+    PASSWORD_ERROR("1003","密码错误!"),
     TEXT_IS_BLANK("1004","请填写完整信息!"),
 
     //文章相关

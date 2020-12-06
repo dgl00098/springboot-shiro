@@ -15,9 +15,6 @@ import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
-import org.crazycake.shiro.RedisCacheManager;
-import org.crazycake.shiro.RedisManager;
-import org.crazycake.shiro.RedisSessionDAO;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -62,6 +59,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/webjars/**", "anon");
         filterChainDefinitionMap.put("/v2/**", "anon");
         filterChainDefinitionMap.put("/user/register/**", "anon");
+        filterChainDefinitionMap.put("/user/login/**", "anon");
         //authc 请求这个资源需要认证和授权
         filterChainDefinitionMap.put("/**","authc");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
@@ -92,13 +90,13 @@ public class ShiroConfig {
     @Bean
     public CustomerRealm getRealm(){
         CustomerRealm customerRealm = new CustomerRealm();
-//        //修改凭证校验匹配器
-//        HashedCredentialsMatcher credentialsMatcher = new HashedCredentialsMatcher();
-//        //设置加密算法为md5
-//        credentialsMatcher.setHashAlgorithmName("MD5");
-//        //设置散列次数
-//        credentialsMatcher.setHashIterations(1024);
-//        customerRealm.setCredentialsMatcher(credentialsMatcher);
+        //修改凭证校验匹配器
+        HashedCredentialsMatcher credentialsMatcher = new HashedCredentialsMatcher();
+        //设置加密算法为md5
+        credentialsMatcher.setHashAlgorithmName("MD5");
+        //设置散列次数
+        credentialsMatcher.setHashIterations(1024);
+        customerRealm.setCredentialsMatcher(credentialsMatcher);
 //        //开启缓存管理
 //        customerRealm.setCacheManager(cacheManager());
 //        //开启全局缓存

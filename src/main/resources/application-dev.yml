@@ -4,7 +4,7 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/pingyiquan?useSSL=false&characterEncoding=utf-8&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/pingyiquan?useSSL=false&characterEncoding=utf-8&serverTimezone=UTC
     username: root
     password: root
 
@@ -15,15 +15,11 @@ spring:
       ddl-auto: update
 
 
-  ##邮箱配置
-  mail:
-    host: smtp.163.com
-    username: dgl00098@163.com
-    password: shouquanma163
+
   redis:
-    host: 127.0.0.1
+    host: localhost
     port: 6379
-    password: 123456
+    password:
 
 swagger:
   open: true

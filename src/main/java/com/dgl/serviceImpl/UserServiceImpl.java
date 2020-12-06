@@ -1,25 +1,24 @@
 package com.dgl.serviceImpl;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.dgl.common.Constants;
 import com.dgl.common.Enum.CustomException;
 import com.dgl.common.Enum.EnumErrorMsg;
-import com.dgl.common.Enum.EnumUserType;
+import com.dgl.common.utils.RedisUtil;
 import com.dgl.common.utils.ShiroMd5Util;
 import com.dgl.common.utils.ShiroUtils;
 import com.dgl.dao.UserRepository;
 import com.dgl.service.UserService;
-import com.dgl.smodel.domain.User;
+import com.dgl.smodel.entity.User;
 import com.dgl.smodel.request.ChangePasswordReq;
 import com.dgl.smodel.request.RetrievePasswordReq;
 import com.dgl.smodel.request.UserLoginReq;
 import com.dgl.smodel.request.UserRegisterReq;
 import com.dgl.smodel.response.RespEntity;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.Subject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
@@ -29,10 +28,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
-@Service
+@Service("userService")
+@Slf4j
 public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepo;
+
+    @Autowired
+    RedisUtil redisUtil;
 
     @Override
     public RespEntity<?> userRegister(UserRegisterReq req) {
@@ -48,7 +51,7 @@ public class UserServiceImpl implements UserService {
         String salt = ShiroMd5Util.getSalt(5);
         //对密码进行md5+salt+hash散列加密
         String sysMd5 = ShiroMd5Util.SysMd5(req.getPassword(),salt);
-        User user = new User(sysMd5, req.getMobile(),0,salt);
+        User user = new User(req.getUserName(),sysMd5, req.getMobile(),0,salt);
         User save = userRepo.save(user);
         return new RespEntity(save);
     }
@@ -57,15 +60,42 @@ public class UserServiceImpl implements UserService {
      * 用户登录
      */
     @Override
-    public RespEntity<?> userLogin(HttpServletRequest request, HttpServletResponse response, UserLoginReq req) {
-
-        User user = userRepo.findByMobile(req.getMobilePhone());
-        if (user == null) {
-            return new RespEntity(EnumErrorMsg.ACCOUNT_OR_PWD_ERROR);
-        }
-
-        return new RespEntity<>(user);
+    public RespEntity<?> userLogin(UserLoginReq req) {
+        Map<String, Object> map = new HashMap<>();
+        Subject subject = SecurityUtils.getSubject();
+        UsernamePasswordToken token = new UsernamePasswordToken(req.getMobilePhone(), req.getPassword());
+        subject.login(token);
+        String sessionId= subject.getSession().getId().toString();
+        User userInfo = (User) ShiroUtils.getSessionAttribute(Constants.SESSION_USER_INFO);
+        map.put("token", sessionId);
+        map.put("userId", userInfo.getId());
+        //账号重复登陆验证
+        checkRepeatLogin(req,sessionId,userInfo);
+        //设置当前用户的登录终端
+        ShiroUtils.setSessionAttribute(Constants.LOGIN_TYPE, req.getLoginType());
+        return new RespEntity(map);
     }
+
+    /**
+     * 账号重复登陆验证
+     * @param req
+     * @param sessionId
+     */
+    private void checkRepeatLogin(UserLoginReq req,String sessionId,User userInfo){
+        //判断用户是否已经登录
+        Object preSessionId = redisUtil.hget(Constants.ON_LOGIN_USER,req.getLoginType()+"_"+ShiroUtils.getUserId());
+        if (preSessionId!=null){
+            //将原session剔除
+            redisUtil.del(Constants.SHIRO_SESSION+preSessionId);
+            log.info("原账号已经被挤掉了=========================================");
+        }
+        //将登录用户存入redis
+        Map<String, Object> sessionMap=new HashMap<>();
+        sessionMap.put(req.getLoginType()+"_"+ShiroUtils.getUserId(),sessionId);
+        redisUtil.hmset(Constants.SHIRO_SESSION+sessionId, BeanUtil.beanToMap(userInfo),7*24*60*60);
+        redisUtil.hmset(Constants.ON_LOGIN_USER,sessionMap,7*24*60*60);
+    }
+
 
     /**
      * 找回密码
@@ -128,28 +158,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public RespEntity login(UserLoginReq userVO) {
-
-        Map<String, Object> map = new HashMap<>();
-        Subject subject = SecurityUtils.getSubject();
-        UsernamePasswordToken token = new UsernamePasswordToken(userVO.getMobilePhone(), userVO.getPassword());
-        subject.login(token);
-        String sessionId = subject.getSession().getId().toString();
-        //账号重复登陆验证
-        //saveLoginUser(userVO,sessionId);
-        User userInfo = (User) ShiroUtils.getSessionAttribute(Constants.SESSION_USER_INFO);
-        map.put("token", sessionId);
-        map.put("userId", userInfo.getId());
-        //判断在哪个app端登录
-        ShiroUtils.setSessionAttribute(Constants.SYS_TYPE, userVO.getType());
-        if (EnumUserType.A1.getCode().equalsIgnoreCase(userVO.getType()) || EnumUserType.P1.getCode().equalsIgnoreCase(userVO.getType())) {
-            Map<String, String> param = new HashMap<>();
-            param.put("token", sessionId);
-            param.put("userId", userInfo.getId().toString());
-            //String res= HttpClientUtil.doPost(url,param);
-        }
-        return new RespEntity(map);
-
+    public User findByMobile(String principal) {
+        User user = userRepo.findByMobile(principal);
+        return user;
     }
 
 }

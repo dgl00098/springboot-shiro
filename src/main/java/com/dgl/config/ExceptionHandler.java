@@ -4,12 +4,11 @@ import com.dgl.common.Enum.CustomException;
 import com.dgl.common.Enum.EnumErrorMsg;
 import com.dgl.smodel.response.RespEntity;
 import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.UnknownAccountException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import javax.validation.ValidationException;
@@ -21,6 +20,17 @@ import javax.validation.ValidationException;
 public class ExceptionHandler {
     private static Logger log = LoggerFactory.getLogger(com.dgl.config.ExceptionHandler.class);
 
+    @org.springframework.web.bind.annotation.ExceptionHandler(value = IncorrectCredentialsException.class)
+    public RespEntity<?> handleException(IncorrectCredentialsException t) {
+        log.error("CustomException",t);
+        return new RespEntity<>(EnumErrorMsg.PASSWORD_ERROR);
+    }
+
+    @org.springframework.web.bind.annotation.ExceptionHandler(value = UnknownAccountException.class)
+    public RespEntity<?> handleException(UnknownAccountException t) {
+        log.error("CustomException",t);
+        return new RespEntity<>(EnumErrorMsg.USER_ACCOUNT_NOT_EXIST);
+    }
 
     @org.springframework.web.bind.annotation.ExceptionHandler(value = CustomException.class)
     public RespEntity<?> handleException(CustomException t) {
@@ -28,19 +38,6 @@ public class ExceptionHandler {
         return new RespEntity<>(t.getErrorCode(),t.getErrorMsg());
     }
 
-    @org.springframework.web.bind.annotation.ExceptionHandler(value =NullPointerException.class)
-    public RespEntity<?> exceptionHandler(NullPointerException e){
-        log.error("发生空指针异常！原因是:",e);
-        e.printStackTrace();
-        return new RespEntity(EnumErrorMsg.OP_FAILED);
-    }
-
-    @org.springframework.web.bind.annotation.ExceptionHandler(value = DataIntegrityViolationException.class)
-    public RespEntity<?> exceptionHandler(DataIntegrityViolationException e){
-        log.error("发生数据完整性违规异常！原因是:",e);
-        e.printStackTrace();
-        return new RespEntity(EnumErrorMsg.OP_FAILED);
-    }
 
     @org.springframework.web.bind.annotation.ExceptionHandler(value = ConstraintViolationException.class)
     public RespEntity<?> exceptionHandler(ConstraintViolationException e){
@@ -49,12 +46,6 @@ public class ExceptionHandler {
         return new RespEntity(EnumErrorMsg.USER_ACCOUNT_HAS_EXIST);
     }
 
-
-    @org.springframework.web.bind.annotation.ExceptionHandler(BadSqlGrammarException.class)
-    public RespEntity<?> sqlGrammarError(BadSqlGrammarException e){
-        log.info("参数错误具体信息 SQL语法错误：" + e.getMessage());
-        return new RespEntity<>(EnumErrorMsg.OP_FAILED);
-    }
 
     @org.springframework.web.bind.annotation.ExceptionHandler(ValidationException.class)
     public RespEntity<?> handle(ValidationException exception) {
@@ -66,16 +57,16 @@ public class ExceptionHandler {
     @org.springframework.web.bind.annotation.ExceptionHandler(MethodArgumentNotValidException.class)
     public RespEntity<?> handle(MethodArgumentNotValidException exception) {
         log.error("参数错误具体信息  方法参数验证失败：" + exception.getMessage(), exception);
-        exception.printStackTrace();
         String defaultMessage = exception.getBindingResult().getFieldError().getDefaultMessage();
-        return new RespEntity(defaultMessage);
+        return new RespEntity(EnumErrorMsg.TEXT_ERROR.getCode(),defaultMessage);
     }
 
-    @org.springframework.web.bind.annotation.ExceptionHandler(HttpMessageNotReadableException.class)
-    public RespEntity<?> handleHttpMessageNotReadableException(HttpMessageNotReadableException exception) {
+
+    @org.springframework.web.bind.annotation.ExceptionHandler(RuntimeException.class)
+    public RespEntity<?> handleRuntimeException(RuntimeException exception) {
         log.error("参数错误具体信息：" + exception.getMessage(), exception);
         exception.printStackTrace();
-        return new RespEntity(EnumErrorMsg.TEXT_ERROR);
+        return new RespEntity(EnumErrorMsg.SYS_BUSY);
     }
 
 

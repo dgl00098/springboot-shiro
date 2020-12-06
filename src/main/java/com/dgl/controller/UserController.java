@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 @RequestMapping(value = "/user")
 @RestController
@@ -41,15 +42,15 @@ public class UserController {
         return userService.userRegister(req);
     }
 
-//    /**
-//     * 用户登录
-//     */
-//    @ApiOperation(value = "用户登录",notes = "用户登录")
-//    @PostMapping(value = "/login")
-//    @ApiOperationSupport(order = 2)
-//    public RespEntity<?> login(HttpServletRequest request, HttpServletResponse response, @RequestBody @Validated UserLoginReq req){
-//        return userService.userLogin(request,response,req);
-//    }
+    /**
+     * 用户登录
+     */
+    @ApiOperation(value = "用户登录",notes = "用户登录")
+    @PostMapping(value = "/login")
+    @ApiOperationSupport(order = 2)
+    public RespEntity<?> login(@RequestBody @Validated UserLoginReq req){
+        return userService.userLogin(req);
+    }
 
     /**
      * 注销登录
@@ -78,28 +79,5 @@ public class UserController {
         return userService.retrievePassword(req);
     }
 
-
-    @PostMapping("login")
-    @ApiOperation(value = "用户登录",notes = "账号密码登录")
-    public RespEntity login(UserLoginReq user){
-        CommonUtil.hasAllRequired(JSON.parseObject(JSON.toJSONString(user)),"mobilePhone,password,type");
-        RespEntity result = null;
-        try {
-            result= userService.login(user);
-        } catch (IncorrectCredentialsException e) {
-            e.printStackTrace();
-            return new RespEntity("密码错误",e.getMessage());
-        } catch (UnknownAccountException e) {
-            e.printStackTrace();
-            return new RespEntity("账号不存在",e.getMessage());
-        } catch (DisabledAccountException e) {
-            e.printStackTrace();
-            return new RespEntity("3007",e.getMessage());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new RespEntity("服务器忙,稍后再试!!!!",e.getMessage());
-        }
-        return result;
-    }
 
 }
