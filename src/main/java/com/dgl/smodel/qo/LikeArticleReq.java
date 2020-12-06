@@ -1,4 +1,4 @@
-package com.dgl.smodel.request;
+package com.dgl.smodel.qo;
 
 import lombok.Data;
 

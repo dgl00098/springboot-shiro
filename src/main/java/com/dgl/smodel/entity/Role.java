@@ -23,4 +23,7 @@ public class Role extends BaseModel {
     public Role() {
     }
 
+    public Role(String roleName) {
+        this.name=roleName;
+    }
 }

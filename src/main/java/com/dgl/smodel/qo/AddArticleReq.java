@@ -1,20 +1,23 @@
-package com.dgl.smodel.request;
+package com.dgl.smodel.qo;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import javax.validation.constraints.NotEmpty;
-import java.time.LocalDateTime;
+import javax.validation.constraints.NotNull;
 
 /**
- * 更新文章请求体
+ * 新增文章请求体
  */
 @Data
 @ApiModel
-public class UpdateArticleReq {
+@Accessors(chain = true)
+public class AddArticleReq {
 
     @ApiModelProperty(value = "userId")
+    @NotNull(message = "创建人不能为空")
     private Long userId;
 
     @ApiModelProperty(value = "文章标题")
@@ -22,22 +25,18 @@ public class UpdateArticleReq {
     private String tittle;
 
     @ApiModelProperty(value = "文章内容")
+    @NotEmpty(message = "文章内容不能为空")
     private String content;
 
     @ApiModelProperty(value = "文章图片url")
     private String imageUrl;
 
     @ApiModelProperty(value = "文章类型ID")
+    @NotNull(message = "文章类型不能为空")
     private Long articleTypeId;
 
-    @ApiModelProperty(value = "文章ID")
-    private Long articleId;
-
-    @ApiModelProperty(value = "文章更新时间")
-    private LocalDateTime updateTime;
-
-    public LocalDateTime getUpdateTime(){
-        return LocalDateTime.now();
-    }
+    @ApiModelProperty(value = "文章标签(原创/转载)")
+    @NotEmpty(message = "文章标签不能为空")
+    private String tag;
 
 }

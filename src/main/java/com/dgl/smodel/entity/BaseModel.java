@@ -4,6 +4,7 @@ package com.dgl.smodel.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -14,7 +15,7 @@ import java.time.LocalDateTime;
  **/
 @MappedSuperclass
 @Data
-public abstract class BaseModel {
+public abstract class BaseModel implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

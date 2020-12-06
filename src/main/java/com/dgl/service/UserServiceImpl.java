@@ -1,6 +1,5 @@
-package com.dgl.serviceImpl;
+package com.dgl.service;
 
-import cn.hutool.core.bean.BeanUtil;
 import com.dgl.common.Constants;
 import com.dgl.common.Enum.CustomException;
 import com.dgl.common.Enum.EnumErrorMsg;
@@ -8,13 +7,12 @@ import com.dgl.common.utils.RedisUtil;
 import com.dgl.common.utils.ShiroMd5Util;
 import com.dgl.common.utils.ShiroUtils;
 import com.dgl.dao.UserRepository;
-import com.dgl.service.UserService;
 import com.dgl.smodel.entity.User;
-import com.dgl.smodel.request.ChangePasswordReq;
-import com.dgl.smodel.request.RetrievePasswordReq;
-import com.dgl.smodel.request.UserLoginReq;
-import com.dgl.smodel.request.UserRegisterReq;
-import com.dgl.smodel.response.RespEntity;
+import com.dgl.smodel.qo.ChangePasswordReq;
+import com.dgl.smodel.qo.RetrievePasswordReq;
+import com.dgl.smodel.qo.UserLoginReq;
+import com.dgl.smodel.qo.UserRegisterReq;
+import com.dgl.smodel.vo.RespEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -66,13 +64,13 @@ public class UserServiceImpl implements UserService {
         UsernamePasswordToken token = new UsernamePasswordToken(req.getMobilePhone(), req.getPassword());
         subject.login(token);
         String sessionId= subject.getSession().getId().toString();
+        //账号重复登陆验证
+        checkRepeatLogin(req,sessionId);
         User userInfo = (User) ShiroUtils.getSessionAttribute(Constants.SESSION_USER_INFO);
         map.put("token", sessionId);
         map.put("userId", userInfo.getId());
-        //账号重复登陆验证
-        checkRepeatLogin(req,sessionId,userInfo);
         //设置当前用户的登录终端
-        ShiroUtils.setSessionAttribute(Constants.LOGIN_TYPE, req.getLoginType());
+        ShiroUtils.setSessionAttribute(Constants.SESSION_LOGIN_TYPE, req.getLoginType());
         return new RespEntity(map);
     }
 
@@ -81,19 +79,18 @@ public class UserServiceImpl implements UserService {
      * @param req
      * @param sessionId
      */
-    private void checkRepeatLogin(UserLoginReq req,String sessionId,User userInfo){
+    private void checkRepeatLogin(UserLoginReq req,String sessionId){
         //判断用户是否已经登录
-        Object preSessionId = redisUtil.hget(Constants.ON_LOGIN_USER,req.getLoginType()+"_"+ShiroUtils.getUserId());
+        Object preSessionId = redisUtil.hget(Constants.REDIS_ON_LOGIN_USER,req.getLoginType()+"_"+ShiroUtils.getUserId());
         if (preSessionId!=null){
             //将原session剔除
-            redisUtil.del(Constants.SHIRO_SESSION+preSessionId);
+            redisUtil.del(Constants.REDIS_SHIRO_SESSION +preSessionId);
             log.info("原账号已经被挤掉了=========================================");
         }
         //将登录用户存入redis
         Map<String, Object> sessionMap=new HashMap<>();
         sessionMap.put(req.getLoginType()+"_"+ShiroUtils.getUserId(),sessionId);
-        redisUtil.hmset(Constants.SHIRO_SESSION+sessionId, BeanUtil.beanToMap(userInfo),7*24*60*60);
-        redisUtil.hmset(Constants.ON_LOGIN_USER,sessionMap,7*24*60*60);
+        redisUtil.hmset(Constants.REDIS_ON_LOGIN_USER,sessionMap);
     }
 
 

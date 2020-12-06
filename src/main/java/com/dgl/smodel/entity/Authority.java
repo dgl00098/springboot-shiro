@@ -19,6 +19,9 @@ public class Authority extends BaseModel {
     @Column(name = "name", columnDefinition = ("varchar(20)  default null comment '权限名称'"))
     private String name;
 
+    @Column(name = "pid", columnDefinition = ("bigint(11)  not null  comment '父级菜单id'"))
+    private Integer pid;
+
     @Column(name = "auth_url", columnDefinition = ("varchar(255)  default null comment '权限地址(路径)'"))
     private String authUrl;
 

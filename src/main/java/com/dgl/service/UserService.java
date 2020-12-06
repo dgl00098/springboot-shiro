@@ -1,11 +1,11 @@
 package com.dgl.service;
 
 import com.dgl.smodel.entity.User;
-import com.dgl.smodel.request.ChangePasswordReq;
-import com.dgl.smodel.request.RetrievePasswordReq;
-import com.dgl.smodel.request.UserLoginReq;
-import com.dgl.smodel.request.UserRegisterReq;
-import com.dgl.smodel.response.RespEntity;
+import com.dgl.smodel.qo.ChangePasswordReq;
+import com.dgl.smodel.qo.RetrievePasswordReq;
+import com.dgl.smodel.qo.UserLoginReq;
+import com.dgl.smodel.qo.UserRegisterReq;
+import com.dgl.smodel.vo.RespEntity;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

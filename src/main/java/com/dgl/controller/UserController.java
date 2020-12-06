@@ -1,27 +1,21 @@
 package com.dgl.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.dgl.config.shiro.CommonUtil;
 import com.dgl.service.UserService;
-import com.dgl.smodel.request.ChangePasswordReq;
-import com.dgl.smodel.request.RetrievePasswordReq;
-import com.dgl.smodel.request.UserLoginReq;
-import com.dgl.smodel.request.UserRegisterReq;
-import com.dgl.smodel.response.RespEntity;
+import com.dgl.smodel.qo.ChangePasswordReq;
+import com.dgl.smodel.qo.RetrievePasswordReq;
+import com.dgl.smodel.qo.UserLoginReq;
+import com.dgl.smodel.qo.UserRegisterReq;
+import com.dgl.smodel.vo.RespEntity;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.shiro.authc.DisabledAccountException;
-import org.apache.shiro.authc.IncorrectCredentialsException;
-import org.apache.shiro.authc.UnknownAccountException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
+
 
 @RequestMapping(value = "/user")
 @RestController

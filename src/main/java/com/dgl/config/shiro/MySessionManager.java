@@ -26,7 +26,7 @@ public class MySessionManager extends DefaultWebSessionManager {
 
     private static final String AUTHORIZATION = "token";
 
-    private static final String REFERENCED_SESSION_ID_SOURCE = "Stateless request";
+    private static final String REFERENCED_SESSION_ID_SOURCE = "Stateless qo";
 
     @Override
     protected Serializable getSessionId(ServletRequest request, ServletResponse response) {

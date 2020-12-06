@@ -5,6 +5,7 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.dgl.common.Constants;
 
 import com.dgl.smodel.entity.User;
+import com.dgl.smodel.vo.RespEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -27,10 +28,6 @@ import java.util.Enumeration;
 @Component
 @Slf4j
 public class WebLogAspect {
-
-//	@Autowired
-//	UserRepository userRepo;
-
 
 	ThreadLocal<Long> startTime = new ThreadLocal<Long>();
 
@@ -57,14 +54,8 @@ public class WebLogAspect {
 			 if(attributes==null){
 				 return;
 			 }
-			 //更新用户的最后访问时间
 			 HttpServletRequest request = attributes.getRequest();
-			 User user=(User)request.getSession().getAttribute(Constants.TOKEN_USER);
-			 if (user!=null){
-				 LocalDateTime now = LocalDateTime.now();
-				 //userRepo.updateUserLastAccessTime(now,user.getId());
-				 System.out.println("==============用户的最后访问时间已更新为: "+now+"==================");
-			 }
+
 	      // 记录下请求内容
 	        log.info("URL : " + request.getRequestURL().toString());
 	        log.info("HTTP_METHOD : " + request.getMethod());
@@ -92,17 +83,16 @@ public class WebLogAspect {
 
 	     /**
 	      * 处理完请求，返回内容
-	      * @param joinPoint
 	      */
 	     @AfterReturning(returning="result", pointcut = "webLog()")
-	     public void doAfterReturning(JoinPoint joinPoint,Object result){
+	     public void doAfterReturning(Object result){
 	        log.info("WebLogAspect.doAfterReturning()");
-//	        String res = JSON.toJSONString(result);
-//	        log.info("返回数据长度："+res.length());
-//			 int i = 2000;
-//			 if(res.length()<= i){
-//	        	log.info("返回数据："+res);
-//	        }
+	        String res = JSON.toJSONString(result);
+	        log.info("返回数据长度："+res.length());
+			 int i = 2000;
+			 if(res.length()<= i){
+	        	log.info("返回数据："+res);
+	        }
 	        log.info("耗时（毫秒） : " + (System.currentTimeMillis() - startTime.get()));
 			 startTime.remove();
 	     }

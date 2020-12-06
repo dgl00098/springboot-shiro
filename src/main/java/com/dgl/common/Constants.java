@@ -29,15 +29,14 @@ public class Constants {
      */
     public static final String SESSION_USER_INFO = "userInfo";
     //登录终端
-    public static final String LOGIN_TYPE="login_type";
+    public static final String SESSION_LOGIN_TYPE ="login_type";
     //redis中用户信息
-    public static final String SHIRO_SESSION="shiro:session:";
-
-    //登陆用户信息
-    public static final String LOGIN_USER="loginUser";
+    public static final String REDIS_SHIRO_SESSION ="shiro:session:";
+    //redis中用户权限信息
+    public static final String REDIS_SHIRO_AUTH ="auth";
 
     //在线用户
-    public static final String ON_LOGIN_USER="onLoginUser";
+    public static final String REDIS_ON_LOGIN_USER ="onLoginUser";
 
 
 }
