@@ -1,6 +1,7 @@
 package com.dgl.common.utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -82,6 +83,56 @@ public final class RedisUtil {
             }
         }
     }
+
+    // ============================bitmap=============================
+
+    /**
+     * 放入bitmap值
+     * @param key   键
+     * @param offset 偏移量:在哪个位置塞值
+     * @param value 塞什么值 0/1 true1 false0
+     * @return true表示已经存在该值 false表示redis中原来没有
+     */
+    public boolean bitMapSet(String key,long offset, boolean value) {
+        try {
+            return redisTemplate.opsForValue().setBit(key,offset,value);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * 获取指定位置的bitmap的值
+     * @param key   键
+     * @param offset 偏移量:在哪个位置塞值
+     * @return true:1 false:0
+     */
+    public boolean bitMapGet(String key,long offset) {
+        try {
+            return redisTemplate.opsForValue().getBit(key,offset);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * 获取bitmap中对应key在指定的范围内的签到次数的计数
+     * @param key   键
+     * @param start 开始位置
+     * @param end   结束位置 -1最后一位
+     * @return 出现的次数
+     */
+    public Long bitMapCount(String key,long start,long end) {
+        try {
+            return redisTemplate.execute((RedisCallback<Long>) connection -> connection.bitCount(key.getBytes(), start, end));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0L;
+        }
+    }
+
     // ============================String=============================
 
     /**

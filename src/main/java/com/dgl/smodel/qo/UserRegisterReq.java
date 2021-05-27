@@ -16,10 +16,6 @@ public class UserRegisterReq {
     @NotBlank(message = "用户密码不能为空")
     private String password;
 
-    @ApiModelProperty(value = "确认登录密码")
-    @NotBlank(message = "确认密码不能为空")
-    private String confirmPassword;
-
     @ApiModelProperty(value = "用户姓名")
     @NotBlank(message = "用户姓名不能为空")
     private String userName;
@@ -28,8 +24,7 @@ public class UserRegisterReq {
     @NotBlank(message = "用户手机号不能为空")
     private String mobile;
 
-    @ApiModelProperty(value = "用户类型")
-    @NotNull(message = "用户类型不能为空")
-    private Integer userType;
+    @ApiModelProperty(value = "用户类型0老师 1学生",hidden = true)
+    private int userType;
 
 }

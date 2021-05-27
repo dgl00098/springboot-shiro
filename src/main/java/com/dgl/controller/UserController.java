@@ -1,6 +1,7 @@
 package com.dgl.controller;
 
 import com.dgl.service.UserService;
+import com.dgl.smodel.entity.User;
 import com.dgl.smodel.qo.ChangePasswordReq;
 import com.dgl.smodel.qo.RetrievePasswordReq;
 import com.dgl.smodel.qo.UserLoginReq;
@@ -15,6 +16,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 
 @RequestMapping(value = "/user")
@@ -33,7 +35,8 @@ public class UserController {
     @PostMapping(value = "/register")
     @ApiOperationSupport(order = 1)
     public RespEntity<?> userRegister(@RequestBody @Validated UserRegisterReq req){
-        return userService.userRegister(req);
+        User user = userService.userRegister(req);
+        return RespEntity.success(user);
     }
 
     /**
@@ -43,7 +46,8 @@ public class UserController {
     @PostMapping(value = "/login")
     @ApiOperationSupport(order = 2)
     public RespEntity<?> login(@RequestBody @Validated UserLoginReq req){
-        return userService.userLogin(req);
+        Map<String, Object> map= userService.userLogin(req);
+        return RespEntity.success(map);
     }
 
     /**
@@ -61,7 +65,8 @@ public class UserController {
     @ApiOperation(value = "修改密码",notes = "用户修改密码")
     @PostMapping(value = "/changePassword")
     public RespEntity<?> changePassword(@RequestBody @Validated ChangePasswordReq req){
-        return userService.changePassword(req);
+        Integer result= userService.changePassword(req);
+        return RespEntity.success(result);
     }
 
     /**
@@ -70,7 +75,8 @@ public class UserController {
     @ApiOperation(value = "忘记密码",notes = "用户找回密码")
     @PostMapping(value = "/retrievePassword")
     public RespEntity<?> retrievePassword(@RequestBody @Validated RetrievePasswordReq req){
-        return userService.retrievePassword(req);
+        Integer result= userService.retrievePassword(req);
+        return RespEntity.success(result);
     }
 
 

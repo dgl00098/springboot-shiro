@@ -1,6 +1,7 @@
 package com.dgl.smodel.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -19,9 +20,10 @@ public abstract class BaseModel implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    protected Integer id;
 
     @Column(name = "create_time",columnDefinition="datetime not null COMMENT '创建时间'", nullable = false, updatable = false)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     protected LocalDateTime createTime=LocalDateTime.now();
 
     @Column(name = "update_time",columnDefinition="timestamp default CURRENT_TIMESTAMP COMMENT '最后更新时间'")

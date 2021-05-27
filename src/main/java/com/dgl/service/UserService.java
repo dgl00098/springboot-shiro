@@ -9,6 +9,7 @@ import com.dgl.smodel.vo.RespEntity;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 /**
  * 注册管理
@@ -20,28 +21,28 @@ public interface UserService {
      * @param req
      * @return
      */
-    RespEntity<?> userRegister(UserRegisterReq req);
+    User userRegister(UserRegisterReq req);
 
     /**
      * 用户登录
      * @param req
      * @return
      */
-    RespEntity<?> userLogin(UserLoginReq req);
+    Map<String, Object> userLogin(UserLoginReq req);
 
     /**
      * 找回密码
      * @param req
      * @return
      */
-    RespEntity<?> retrievePassword(RetrievePasswordReq req);
+    Integer retrievePassword(RetrievePasswordReq req);
 
     /**
      * 修改密码
      * @param req
      * @return
      */
-    RespEntity<?> changePassword(ChangePasswordReq req);
+    Integer changePassword(ChangePasswordReq req);
 
     /**
      * 注销登录
