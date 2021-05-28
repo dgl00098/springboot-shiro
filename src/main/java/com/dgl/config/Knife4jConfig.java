@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 @Configuration
 @EnableKnife4j
-@Profile({"dev","local"})
+@Profile({"dev","docker"})
 @EnableSwagger2WebMvc
 public class Knife4jConfig {
 

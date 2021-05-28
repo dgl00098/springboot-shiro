@@ -151,7 +151,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByMobile(String principal) {
-        User user = userRepo.findByMobile(principal).orElseThrow(() -> new CustomException(EnumErrorMsg.OP_FAILED));
+        User user = userRepo.findByMobile(principal).orElseThrow(() -> new CustomException(EnumErrorMsg.USER_ACCOUNT_NOT_EXIST));
         return user;
     }
 

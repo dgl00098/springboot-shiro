@@ -26,12 +26,33 @@ public class BookController {
     BookService bookService;
 
 
+    @ApiOperation(value = "测试插入数据")
+    @PostMapping(value = "/test")
+    public RespEntity test() {
+        Integer result=bookService.test();
+        return new RespEntity(result);
+    }
+
     @ApiOperation(value = "新增")
     @PostMapping(value = "/save")
     public RespEntity save(BookDTO bookDTO) {
         List<BookDTO> list=new ArrayList<>();
         list.add(bookDTO);
         Integer result=bookService.save(list);
+        return new RespEntity(result);
+    }
+
+    @ApiOperation(value = "查询所有")
+    @GetMapping(value = "/findAll")
+    public RespEntity<List<BookDTO>> findAll() {
+        List<BookDTO> result=bookService.findAll();
+        return new RespEntity(result);
+    }
+
+    @ApiOperation(value = "删除所有")
+    @DeleteMapping(value = "/deleteAll")
+    public RespEntity<Integer> deleteAll() {
+        Integer result=bookService.deleteAll();
         return new RespEntity(result);
     }
 

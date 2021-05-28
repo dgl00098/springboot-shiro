@@ -28,4 +28,23 @@ public interface BookService {
      * @return
      */
     Integer importBook(MultipartFile file);
+
+    /**
+     * 测试插入数据
+     * @return
+     */
+    Integer test();
+
+    /**
+     * 查询所有
+     * @return
+     */
+    List<BookDTO> findAll();
+
+    /**
+     * 删除所有
+     * @return
+     */
+    Integer deleteAll();
+
 }

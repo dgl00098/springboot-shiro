@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: dev
+    active: docker
 #服务器配置
 server:
   port: 9000

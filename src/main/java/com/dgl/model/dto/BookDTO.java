@@ -2,8 +2,10 @@ package com.dgl.model.dto;
 
 import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
+import com.dgl.model.entity.es.Book;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,7 +19,8 @@ import java.math.BigDecimal;
 
 @Data
 @ApiModel(description = "书籍")
-@NoArgsConstructor
+@Builder
+@AllArgsConstructor
 public class BookDTO {
 
 
@@ -54,4 +57,20 @@ public class BookDTO {
     @ExcelProperty(value = "价格")
     private String price;
 
+    @ApiModelProperty(value = "创建时间")
+    private String createTime ="";
+
+    public BookDTO() {
+    }
+
+    public BookDTO(Book book) {
+        this.bookName = book.getBookName();
+        this.author = book.getAuthor();
+        this.bookImage = book.getBookImage();
+        this.bookType = book.getBookType();
+        this.bookPages = book.getBookPages();
+        this.press = book.getPress();
+        this.price = book.getPrice();
+        this.createTime = book.getCreateTime();
+    }
 }
