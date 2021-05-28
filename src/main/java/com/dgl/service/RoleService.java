@@ -1,8 +1,8 @@
 package com.dgl.service;
 
-import com.dgl.smodel.entity.Role;
-import com.dgl.smodel.qo.BaseQO;
-import com.dgl.smodel.vo.RespEntity;
+import com.dgl.model.entity.Role;
+import com.dgl.model.dto.BaseQO;
+import com.dgl.model.vo.RespEntity;
 import org.springframework.data.domain.Page;
 
 /**

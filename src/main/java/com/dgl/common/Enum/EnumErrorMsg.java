@@ -10,6 +10,7 @@ public enum EnumErrorMsg {
     OP_SUCCESS("200", "操作成功"),
     SYS_BUSY("500", "服务器忙,稍后重试......"),
     OP_FAILED("400", "操作失败"),
+    NO_REPEATED_SUBMIT("500", "请不要重复提交数据!!!"),
 
     //用户相关
     PWD_NOT_EQUALS("1000","两次密码输入不一致,请核对后重新输入!"),

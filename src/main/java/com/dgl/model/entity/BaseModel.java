@@ -1,4 +1,4 @@
-package com.dgl.smodel.entity;
+package com.dgl.model.entity;
 
 
 import com.dgl.common.utils.DGLDateUtils;

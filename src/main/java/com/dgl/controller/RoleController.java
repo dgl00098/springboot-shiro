@@ -1,17 +1,13 @@
 package com.dgl.controller;
 
 import com.dgl.service.RoleService;
-import com.dgl.smodel.entity.Role;
-import com.dgl.smodel.qo.BaseQO;
-import com.dgl.smodel.vo.RespEntity;
+import com.dgl.model.entity.Role;
+import com.dgl.model.vo.RespEntity;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.constraints.NotBlank;
 
 
 @RequestMapping(value = "/role")

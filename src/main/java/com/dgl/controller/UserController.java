@@ -1,12 +1,12 @@
 package com.dgl.controller;
 
 import com.dgl.service.UserService;
-import com.dgl.smodel.entity.User;
-import com.dgl.smodel.qo.ChangePasswordReq;
-import com.dgl.smodel.qo.RetrievePasswordReq;
-import com.dgl.smodel.qo.UserLoginReq;
-import com.dgl.smodel.qo.UserRegisterReq;
-import com.dgl.smodel.vo.RespEntity;
+import com.dgl.model.entity.User;
+import com.dgl.model.dto.ChangePasswordReq;
+import com.dgl.model.dto.RetrievePasswordReq;
+import com.dgl.model.dto.UserLoginReq;
+import com.dgl.model.dto.UserRegisterReq;
+import com.dgl.model.vo.RespEntity;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.annotations.Api;

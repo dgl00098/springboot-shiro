@@ -1,7 +1,7 @@
 package com.dgl.common.utils;
 
 import com.dgl.common.Constants;
-import com.dgl.smodel.entity.User;
+import com.dgl.model.entity.User;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.session.Session;

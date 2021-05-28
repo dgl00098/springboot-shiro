@@ -1,11 +1,10 @@
-package com.dgl.smodel.entity;
+package com.dgl.model.entity;
 
 import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
 /**
  * 权限表

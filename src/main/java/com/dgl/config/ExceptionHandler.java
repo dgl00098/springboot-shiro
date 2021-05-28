@@ -2,7 +2,7 @@ package com.dgl.config;
 
 import com.dgl.common.Enum.CustomException;
 import com.dgl.common.Enum.EnumErrorMsg;
-import com.dgl.smodel.vo.RespEntity;
+import com.dgl.model.vo.RespEntity;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.hibernate.exception.ConstraintViolationException;

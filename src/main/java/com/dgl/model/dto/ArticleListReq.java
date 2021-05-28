@@ -1,4 +1,4 @@
-package com.dgl.smodel.qo;
+package com.dgl.model.dto;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

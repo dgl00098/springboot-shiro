@@ -1,4 +1,4 @@
-package com.dgl.smodel.vo;
+package com.dgl.model.vo;
 
 import com.dgl.common.Enum.EnumErrorMsg;
 import lombok.Data;

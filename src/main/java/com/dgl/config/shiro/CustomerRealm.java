@@ -4,7 +4,7 @@ import com.dgl.common.Constants;
 import com.dgl.common.utils.ApplicationContextUtils;
 import com.dgl.common.utils.ShiroUtils;
 import com.dgl.service.UserService;
-import com.dgl.smodel.entity.User;
+import com.dgl.model.entity.User;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;

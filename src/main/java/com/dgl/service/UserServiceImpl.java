@@ -9,12 +9,12 @@ import com.dgl.common.utils.RedisUtil;
 import com.dgl.common.utils.ShiroMd5Util;
 import com.dgl.common.utils.ShiroUtils;
 import com.dgl.dao.UserRepository;
-import com.dgl.smodel.entity.User;
-import com.dgl.smodel.qo.ChangePasswordReq;
-import com.dgl.smodel.qo.RetrievePasswordReq;
-import com.dgl.smodel.qo.UserLoginReq;
-import com.dgl.smodel.qo.UserRegisterReq;
-import com.dgl.smodel.vo.RespEntity;
+import com.dgl.model.entity.User;
+import com.dgl.model.dto.ChangePasswordReq;
+import com.dgl.model.dto.RetrievePasswordReq;
+import com.dgl.model.dto.UserLoginReq;
+import com.dgl.model.dto.UserRegisterReq;
+import com.dgl.model.vo.RespEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -145,7 +145,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public RespEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
-
+        ShiroUtils.getSubject().logout();
         return new RespEntity<>();
     }
 
