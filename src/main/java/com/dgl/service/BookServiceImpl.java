@@ -62,6 +62,7 @@ public class BookServiceImpl implements BookService {
         if (!CollectionUtils.isEmpty(list)) {
             list.forEach(bookDTO -> {
                 BookDTO dto = BookDTO.builder().
+                        id(bookDTO.getId()).
                         author(bookDTO.getAuthor()).
                         description(bookDTO.getDescription()).
                         bookImage(bookDTO.getBookImage()).
@@ -170,6 +171,12 @@ public class BookServiceImpl implements BookService {
         Book book = bookRepo.findById(id).orElseThrow(() -> new CustomException(EnumErrorMsg.DATA_NOT_EXIST));
         BookDTO bookDTO = new BookDTO(book);
         return bookDTO;
+    }
+
+    @Override
+    public Integer deleteById(String id) {
+        bookRepo.deleteById(id);
+        return EnumYesOrNo.YES.getCode();
     }
 
     /**

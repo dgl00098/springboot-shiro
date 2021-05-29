@@ -58,4 +58,11 @@ public interface BookService {
      * @return
      */
     BookDTO findById(String id);
+
+    /**
+     * 删除图书
+     * @param id
+     * @return
+     */
+    Integer deleteById(String id);
 }

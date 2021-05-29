@@ -5,6 +5,7 @@ import com.dgl.model.dto.BookDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
@@ -47,6 +48,7 @@ public class Book implements Serializable {
 
     //新增
     public Book(BookDTO dto) {
+        this.id = StringUtils.isNotEmpty(dto.getId())?dto.getId():null;
         this.bookName = dto.getBookName();
         this.author = dto.getAuthor();
         this.bookImage = dto.getBookImage();

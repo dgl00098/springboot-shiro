@@ -8,6 +8,7 @@ import com.dgl.model.entity.Role;
 import com.dgl.model.vo.RespEntity;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,13 +28,13 @@ public class BookController {
     @Autowired
     BookService bookService;
 
-
     @ApiOperation(value = "测试插入数据")
     @PostMapping(value = "/testBatchInsert")
     public RespEntity testBatchInsert() {
         Integer result=bookService.testBatchInsert();
         return new RespEntity(result);
     }
+
 
     @ApiOperation(value = "新增/编辑图书")
     @PostMapping(value = "/save")
@@ -44,8 +45,17 @@ public class BookController {
         return new RespEntity(result);
     }
 
+    @ApiOperation(value = "删除图书")
+    @DeleteMapping(value = "/deleteById")
+    @ApiImplicitParam(name = "id",value = "图书id",required = true)
+    public RespEntity deleteById(String id) {
+        Integer result=bookService.deleteById(id);
+        return new RespEntity(result);
+    }
+
     @ApiOperation(value = "书籍详情")
     @GetMapping(value = "/findById")
+    @ApiImplicitParam(name = "id",value = "图书id",required = true)
     public RespEntity<BookDTO> findById(String id) {
         BookDTO result=bookService.findById(id);
         return new RespEntity(result);
