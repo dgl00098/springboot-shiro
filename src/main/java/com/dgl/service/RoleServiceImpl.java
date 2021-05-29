@@ -2,7 +2,7 @@ package com.dgl.service;
 
 import com.dgl.dao.RoleRepository;
 import com.dgl.model.entity.Role;
-import com.dgl.model.dto.BaseQO;
+import com.dgl.model.qo.BaseQueryQO;
 import com.dgl.model.vo.RespEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -33,7 +33,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Page<Role> list(BaseQO req) {
+    public Page<Role> list(BaseQueryQO req) {
         Sort sort = Sort.by(Sort.Direction.ASC, "createTime");
         Pageable pageable = PageRequest.of(req.getCurrentPage(), req.getPageSize(),sort);
         Page<Role> page = roleRepository.findByName(req.getKeywords(), pageable);

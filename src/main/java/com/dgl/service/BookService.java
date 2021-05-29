@@ -1,9 +1,7 @@
 package com.dgl.service;
 
-import com.dgl.model.dto.BaseQO;
 import com.dgl.model.dto.BookDTO;
-import com.dgl.model.entity.Role;
-import com.dgl.model.vo.RespEntity;
+import com.dgl.model.dto.BookListDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,7 +18,7 @@ public interface BookService {
      * @param list
      * @return
      */
-    Integer save(List<BookDTO> list);
+    String save(List<BookDTO> list);
 
     /**
      * 批量导入图书
@@ -33,13 +31,7 @@ public interface BookService {
      * 测试插入数据
      * @return
      */
-    Integer test();
-
-    /**
-     * 查询所有
-     * @return
-     */
-    List<BookDTO> findAll();
+    Integer testBatchInsert();
 
     /**
      * 删除所有
@@ -47,4 +39,23 @@ public interface BookService {
      */
     Integer deleteAll();
 
+    /**
+     * 查询总条数
+     * @return
+     */
+    Integer countAll();
+
+    /**
+     * 书籍列表
+     * @param bookListDTO
+     * @return
+     */
+    Page<BookDTO> bookList(BookListDTO bookListDTO);
+
+    /**
+     * 书籍详情
+     * @param id
+     * @return
+     */
+    BookDTO findById(String id);
 }

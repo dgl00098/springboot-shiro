@@ -13,13 +13,11 @@ spring:
     port: 16379
   elasticsearch:
     rest:
-      uris: ["http://localhost:19200"]
+      uris: http://localhost:19200
   data:
     elasticsearch:
       repositories:
         enabled: true
-      cluster-nodes: http://localhost:19300 # es的连接地址及端口号
-      cluster-name: docker-cluster # es集群的名称
 
 
 

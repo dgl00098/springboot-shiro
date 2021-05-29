@@ -19,3 +19,4 @@ logging:
     org.springframework.security: DEBUG
     org.springframework.security.oauth2: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: trace
+    org.springframework.data.elasticsearch.core: INFO

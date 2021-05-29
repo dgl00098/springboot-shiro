@@ -24,6 +24,10 @@ import java.math.BigDecimal;
 public class BookDTO {
 
 
+    @ApiModelProperty(value = "id(编辑时必须)")
+    @ExcelIgnore
+    private String id;
+
     @ApiModelProperty(value = "书籍名称")
     @NotEmpty(message = "书籍名称不能为空")
     @ExcelProperty(value = "书籍名称")
@@ -57,13 +61,20 @@ public class BookDTO {
     @ExcelProperty(value = "价格")
     private String price;
 
+    @ApiModelProperty(value = "书籍描述")
+    private String description;
+
     @ApiModelProperty(value = "创建时间")
     private String createTime ="";
+
+    @ApiModelProperty(value = "状态0正常")
+    private int status;
 
     public BookDTO() {
     }
 
     public BookDTO(Book book) {
+        this.id = book.getId();
         this.bookName = book.getBookName();
         this.author = book.getAuthor();
         this.bookImage = book.getBookImage();
@@ -71,6 +82,8 @@ public class BookDTO {
         this.bookPages = book.getBookPages();
         this.press = book.getPress();
         this.price = book.getPrice();
+        this.status = book.getStatus();
+        this.description = book.getDescription();
         this.createTime = book.getCreateTime();
     }
 }

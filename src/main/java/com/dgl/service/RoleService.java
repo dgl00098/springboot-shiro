@@ -1,7 +1,7 @@
 package com.dgl.service;
 
 import com.dgl.model.entity.Role;
-import com.dgl.model.dto.BaseQO;
+import com.dgl.model.qo.BaseQueryQO;
 import com.dgl.model.vo.RespEntity;
 import org.springframework.data.domain.Page;
 
@@ -13,7 +13,7 @@ public interface RoleService {
 
     Role save(String roleName);
 
-    Page<Role> list(BaseQO baseQO);
+    Page<Role> list(BaseQueryQO baseQueryQO);
 
     void delete(Integer id);
 
