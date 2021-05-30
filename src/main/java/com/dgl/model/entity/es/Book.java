@@ -26,22 +26,22 @@ public class Book implements Serializable {
 
     private int status;
 
-    @Field(analyzer = "ik_smart", type = FieldType.Keyword)
+    @Field(analyzer = "ik_smart", type = FieldType.Text)
     private String bookName;
 
-    @Field(analyzer = "ik_smart", type = FieldType.Keyword)
+    @Field(analyzer = "ik_smart", type = FieldType.Text)
     private String author;
 
     private String bookImage;
 
-    @Field(analyzer = "ik_smart", type = FieldType.Keyword)
+    @Field(analyzer = "ik_smart", type = FieldType.Text)
     private String bookType;
 
     private int bookPages;
 
     private String press;
 
-    @Field(analyzer = "ik_smart", type = FieldType.Keyword)
+    @Field(analyzer = "ik_smart", type = FieldType.Text)
     private String description;
 
     private String price;

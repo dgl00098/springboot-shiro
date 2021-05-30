@@ -5,6 +5,7 @@ import com.dgl.common.Enum.EnumErrorMsg;
 import com.dgl.model.vo.RespEntity;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
+import org.elasticsearch.ElasticsearchStatusException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +38,13 @@ public class ExceptionHandler {
         return new RespEntity<>(t.getErrorCode(),t.getErrorMsg());
     }
 
+
+    @org.springframework.web.bind.annotation.ExceptionHandler(value = ElasticsearchStatusException.class)
+    public RespEntity<?> exceptionHandler(ElasticsearchStatusException e){
+        log.error("发生es状态原因是:",e);
+        e.printStackTrace();
+        return new RespEntity(EnumErrorMsg.DATA_NOT_EXIST);
+    }
 
     @org.springframework.web.bind.annotation.ExceptionHandler(value = ConstraintViolationException.class)
     public RespEntity<?> exceptionHandler(ConstraintViolationException e){

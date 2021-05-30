@@ -16,6 +16,8 @@ spring:
       uris: http://localhost:19200
   data:
     elasticsearch:
+      host: localhost
+      port: 19200
       repositories:
         enabled: true
 

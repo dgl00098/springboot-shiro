@@ -14,6 +14,7 @@ import com.dgl.model.dto.BookListDTO;
 import com.dgl.model.entity.es.Book;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.sort.SortBuilder;
@@ -54,7 +55,10 @@ public class BookServiceImpl implements BookService {
     AsyncService asyncService;
 
     @Autowired
-    private ElasticsearchRestTemplate elasticsearchRestTemplate;
+    ElasticsearchRestTemplate elasticsearchRestTemplate;
+
+    @Autowired
+    RestHighLevelClient restHighLevelClient;
 
     @Override
     public String save(List<BookDTO> list) {
@@ -175,6 +179,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Integer deleteById(String id) {
+        //restHighLevelClient.search()
         bookRepo.deleteById(id);
         return EnumYesOrNo.YES.getCode();
     }
