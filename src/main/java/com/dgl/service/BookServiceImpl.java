@@ -137,34 +137,18 @@ public class BookServiceImpl implements BookService {
             scoreSortBuilder = SortBuilders.fieldSort(dto.getOrderField());
             scoreSortBuilder.order(dto.getOrderType().equals("desc") ? SortOrder.DESC : SortOrder.ASC);
         }
-//        //高亮查询
-//        HighlightBuilder highlightBuilder = new HighlightBuilder();
-//        //添加高亮查询的参数
-//        highlightBuilder.field(dto.getBookName()).field(dto.getBookType()).preTags("<font color='red'>").postTags("</font>");
         //创建请求体
         NativeSearchQuery searchQuery = new NativeSearchQueryBuilder().
                 withQuery(boolQuery).
                 withPageable(page).
                 withSort(scoreSortBuilder).
-                //withHighlightBuilder(highlightBuilder).
                 build();
         SearchHits<Book> search = elasticsearchRestTemplate.search(searchQuery, Book.class);
         long count = elasticsearchRestTemplate.count(searchQuery, Book.class);
         List<BookDTO> list=new ArrayList<>();
-        //添加高亮查询
         search.forEach(bookSearchHit -> {
             Book book = bookSearchHit.getContent();
             BookDTO bookDTO = new BookDTO(book);
-//            List<String> highlightField1 = bookSearchHit.getHighlightField(dto.getBookName());
-//            if (!CollectionUtils.isEmpty(highlightField1)){
-//                String s = highlightField1.get(0);
-//                bookDTO.setBookImage(s);
-//            }
-//            List<String> highlightField2 = bookSearchHit.getHighlightField(dto.getBookType());
-//            if (!CollectionUtils.isEmpty(highlightField2)){
-//                String s = highlightField2.get(0);
-//                bookDTO.setBookType(s);
-//            }
             list.add(bookDTO);
         });
         return new PageImpl<>(list,page,count);
@@ -179,7 +163,6 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Integer deleteById(String id) {
-        //restHighLevelClient.search()
         bookRepo.deleteById(id);
         return EnumYesOrNo.YES.getCode();
     }

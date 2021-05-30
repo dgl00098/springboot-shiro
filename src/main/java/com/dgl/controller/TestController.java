@@ -1,5 +1,6 @@
 package com.dgl.controller;
 
+import cn.hutool.core.util.RandomUtil;
 import com.alibaba.fastjson.JSON;
 import com.dgl.model.entity.es.People;
 import com.dgl.model.vo.RespEntity;
@@ -9,12 +10,16 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
+import org.elasticsearch.action.bulk.BulkRequest;
+import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.action.search.SearchRequest;
+import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.support.master.AcknowledgedResponse;
 import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.action.update.UpdateResponse;
@@ -24,6 +29,11 @@ import org.elasticsearch.client.indices.CreateIndexRequest;
 import org.elasticsearch.client.indices.CreateIndexResponse;
 import org.elasticsearch.client.indices.GetIndexRequest;
 import org.elasticsearch.common.xcontent.XContentType;
+import org.elasticsearch.index.query.MatchQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.TermQueryBuilder;
+import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -127,5 +137,45 @@ public class TestController {
         DeleteResponse deleteResponse = restHighLevelClient.delete(request, RequestOptions.DEFAULT);
         return new RespEntity(deleteResponse);
     }
+
+
+    @ApiOperation(value = "批量插入文档")
+    @PostMapping(value = "/batchInsertDocument")
+    @ApiImplicitParam(name = "index",value = "索引名字",required = true)
+    public RespEntity batchInsertDocument(String index) throws IOException {
+        BulkRequest bulkRequest = new BulkRequest();
+        for (int i = 0; i < 100; i++) {
+            //创建对象
+            String name1="张三";
+            String name2="李四";
+            People people = new People((i % 2==0)?name1+(i+1):name2+(i+1), RandomUtil.randomInt(10,100));
+            bulkRequest.add(new IndexRequest(index).id(""+(i+1)).source(JSON.toJSONString(people),XContentType.JSON));
+        }
+        //客户端发送请求,得到相应结果
+        BulkResponse bulkResponse = restHighLevelClient.bulk(bulkRequest, RequestOptions.DEFAULT);
+        return new RespEntity(bulkResponse);
+    }
+
+    @ApiOperation(value = "查询文档")
+    @GetMapping(value = "/findDocument")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "index",value = "索引名字",required = true),
+            @ApiImplicitParam(name = "keyword",value = "关键字",required = true)
+    })
+    public RespEntity findDocument(String index,String keyword) throws IOException {
+        //创建搜索请求
+        SearchRequest searchRequest = new SearchRequest(index);
+        //构建搜索条件
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        //TermQueryBuilder queryTermBuilder = QueryBuilders.termQuery("name", keyword);//分词精确查询
+        MatchQueryBuilder queryBuilder = QueryBuilders.matchQuery("name", keyword);//分词匹配查询
+        searchSourceBuilder.query(queryBuilder);
+        searchRequest.source(searchSourceBuilder);
+        //执行查询
+        SearchResponse search = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        SearchHits hits = search.getHits();
+        return new RespEntity(hits.getHits());
+    }
+
 
 }
