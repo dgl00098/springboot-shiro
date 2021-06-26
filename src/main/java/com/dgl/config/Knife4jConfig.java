@@ -43,13 +43,13 @@ public class Knife4jConfig {
 	 * @return
 	 */
 	private ApiInfo apiInfo() {
-		Contact contact = new Contact("务新科技有限公司", "http://localhost:9000/doc.html", "666666666@qq.com");
-		return new ApiInfo("统一用户认证服务平台",
-				"务新科技,此接口文档仅供内部查看",
+		Contact contact = new Contact("杜光磊", "http://localhost:9000/doc.html", "dgl00098@163.com");
+		return new ApiInfo("尚品宅配服务平台",
+				"此接口文档仅供内部查看",
 				"v1.0",
 				"www.wuxin.com",
-				contact, "务新科技执照",
-				"务新科技执照URL",
+				contact, "可爱的小果果",
+				"可爱的小果果",
 				new ArrayList<>()
 		);
 	}

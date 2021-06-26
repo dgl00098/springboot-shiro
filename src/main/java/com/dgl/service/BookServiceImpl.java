@@ -35,6 +35,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -145,7 +146,7 @@ public class BookServiceImpl implements BookService {
                 build();
         SearchHits<Book> search = elasticsearchRestTemplate.search(searchQuery, Book.class);
         long count = elasticsearchRestTemplate.count(searchQuery, Book.class);
-        List<BookDTO> list=new ArrayList<>();
+        List<BookDTO> list=new LinkedList<>();
         search.forEach(bookSearchHit -> {
             Book book = bookSearchHit.getContent();
             BookDTO bookDTO = new BookDTO(book);

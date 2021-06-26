@@ -43,7 +43,7 @@ public class ExceptionHandler {
     public RespEntity<?> exceptionHandler(ElasticsearchStatusException e){
         log.error("发生es状态原因是:",e);
         e.printStackTrace();
-        return new RespEntity(EnumErrorMsg.DATA_NOT_EXIST);
+        return new RespEntity("500",e.getDetailedMessage());
     }
 
     @org.springframework.web.bind.annotation.ExceptionHandler(value = ConstraintViolationException.class)

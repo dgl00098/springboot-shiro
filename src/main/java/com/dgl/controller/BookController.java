@@ -62,8 +62,8 @@ public class BookController {
     }
 
     @ApiOperation(value = "书籍列表-单字符串全文查询")
-    @GetMapping(value = "/bookList1")
-    public RespEntity<Page<BookDTO>> bookList1(BookListDTO bookListDTO) {
+    @GetMapping(value = "/bookList")
+    public RespEntity<Page<BookDTO>> bookList(BookListDTO bookListDTO) {
         Page<BookDTO> result=bookService.bookList(bookListDTO);
         return new RespEntity(result);
     }

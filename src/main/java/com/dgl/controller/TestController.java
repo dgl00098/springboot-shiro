@@ -38,6 +38,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 @RequestMapping(value = "/esTest")
 @RestController
@@ -48,7 +49,7 @@ public class TestController {
     @Autowired
     RestHighLevelClient restHighLevelClient;
 
-    @ApiOperation(value = "创建索引")
+    @ApiOperation(value = "创建索引",notes = "相当于创建一张表",position = 1)
     @PostMapping(value = "/createIndex")
     @ApiImplicitParam(name = "index",value = "索引名字",required = true)
     public RespEntity createIndex(String index) throws IOException {
@@ -56,10 +57,10 @@ public class TestController {
         CreateIndexRequest createIndexRequest = new CreateIndexRequest(index);
         CreateIndexResponse createIndexResponse = restHighLevelClient.indices().create(createIndexRequest, RequestOptions.DEFAULT);
         System.err.println(createIndexResponse);
-        return new RespEntity(createIndexResponse.toString());
+        return new RespEntity(createIndexResponse.toString()+"\n"+index);
     }
 
-    @ApiOperation(value = "判断索引是否存在")
+    @ApiOperation(value = "判断索引是否存在",notes = "查询表名是否存在",position = 2)
     @GetMapping(value = "/isExist")
     @ApiImplicitParam(name = "index",value = "索引名字",required = true)
     public RespEntity isExist(String index) throws IOException {
@@ -70,7 +71,7 @@ public class TestController {
         return new RespEntity(exists);
     }
 
-    @ApiOperation(value = "删除索引")
+    @ApiOperation(value = "删除索引",notes = "删除某张表",position = 3)
     @DeleteMapping(value = "/deleteIndex")
     @ApiImplicitParam(name = "index",value = "索引名字",required = true)
     public RespEntity deleteIndex(String index) throws IOException {
@@ -81,12 +82,12 @@ public class TestController {
         return new RespEntity(delete);
     }
 
-    @ApiOperation(value = "创建文档")
+    @ApiOperation(value = "创建文档",notes = "在某张表中插入一条记录",position = 4)
     @PostMapping(value = "/createDocument")
     @ApiImplicitParam(name = "index",value = "索引名字",required = true)
     public RespEntity createDocument(String index) throws IOException {
         //创建对象
-        People people = new People("张三",30);
+        People people = new People("张三"+ LocalDateTime.now().toString(),30);
         //创建请求
         IndexRequest request = new IndexRequest(index);
         //将数据转换成json,放入请求
@@ -96,7 +97,7 @@ public class TestController {
         return new RespEntity(indexResponse);
     }
 
-    @ApiOperation(value = "查询文档详情")
+    @ApiOperation(value = "查询文档详情",notes = "查询某张表中某条记录的详情",position = 5)
     @GetMapping(value = "/findDocumentById")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "index",value = "索引名字",required = true),
@@ -110,7 +111,7 @@ public class TestController {
         return new RespEntity(getResponse.getSource());
     }
 
-    @ApiOperation(value = "更新文档")
+    @ApiOperation(value = "更新文档",notes = "更新某张表中某条记录的内容",position = 6)
     @PostMapping(value = "/updateDocumentById")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "index",value = "索引名字",required = true),
@@ -126,7 +127,7 @@ public class TestController {
         return new RespEntity(updateResponse);
     }
 
-    @ApiOperation(value = "删除文档")
+    @ApiOperation(value = "删除文档",notes = "删除某张表中某条记录",position = 7)
     @DeleteMapping(value = "/deleteDocument")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "index",value = "索引名字",required = true),
@@ -139,7 +140,7 @@ public class TestController {
     }
 
 
-    @ApiOperation(value = "批量插入文档")
+    @ApiOperation(value = "批量插入文档",notes = "批量某张表中N条记录",position = 8)
     @PostMapping(value = "/batchInsertDocument")
     @ApiImplicitParam(name = "index",value = "索引名字",required = true)
     public RespEntity batchInsertDocument(String index) throws IOException {
@@ -156,7 +157,7 @@ public class TestController {
         return new RespEntity(bulkResponse);
     }
 
-    @ApiOperation(value = "查询文档")
+    @ApiOperation(value = "查询文档",notes = "在某张表中全局模糊搜索内容",position = 9)
     @GetMapping(value = "/findDocument")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "index",value = "索引名字",required = true),
