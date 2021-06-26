@@ -1,0 +1,22 @@
+spring:
+  profiles:
+    active: docker
+#服务器配置
+server:
+  port: 9000
+
+
+
+
+
+expire_date: 10
+knife4j:
+  enable: true
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    org.springframework.security: DEBUG
+    org.springframework.security.oauth2: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: trace
+    org.springframework.data.elasticsearch.core: INFO
